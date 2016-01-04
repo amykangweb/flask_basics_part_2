@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+
+{% block title %}Howdy! | {{ super() }}{% endblock %}
+
+{% block content %}
+<h1>Hello! Welcome to Style Creator</h1>
+
+<form action="{{ url_for('save') }}" method="POST">
+  <label>Name your person</label><br>
+  <input type="text" name="name" value="{{ saves.get('name', '') }}" autofocus>
+  <input type="submit" value="Let's build it!">
+</form>
+{% endblock %}

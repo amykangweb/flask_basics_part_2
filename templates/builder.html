@@ -1,0 +1,49 @@
+{% extends 'layout.html' %}
+
+{% block title %}Builder Template | {{ super() }}{% endblock %}
+
+{% block content %}
+<h1>Build your Style</h1>
+<p>Choose a background color and clothes.</p>
+
+<form action="{{ url_for('save') }}" method="POST">
+  <input type="text" name="name" value="{{ saves.get('name' '') }}">
+  <p>
+  {% for color in options['colors'] %}
+    <label for="{{ color }}">{{ color }}</label>
+    <input type="radio" id="{{ color }}" name="colors" value="{{ color }}"
+    {% if saves.get('colors') == color %}checked{% endif %}>
+  {% endfor %}
+  </p>
+  <div class="items">
+  <h2>All Categories</h2>
+    {% for category, choices in options.items() %}
+    {% if category != 'colors' %}
+      <p>{{ category.title() }}</p>
+      <input type="radio" id="no_{{ category }}_icon" name="{{ category }}" value="" {% if not saves.get(category) %}checked{% endif %}>
+      <label for="no_{{ category }}_icon">{{ category }}</label>
+        {% for choice in choices %}
+          <input type="radio" id="{{ category }}-{{ choice }}_icon" name="{{ category }}" value="{{ choice }}" {% if saves.get(category) == choice %}checked{% endif %}>
+          <label for="{{ category }}-{{ choice }}_icon">{{ choice }}</label>
+        {% endfor %}
+    {% endif %}
+    {% endfor %}
+  </div>
+  <button class="btn">Update</button>
+</form>
+
+<h2>Your Choices:</h2>
+
+<p><strong>Color:</strong> {{ saves.get('colors', '') }}</p>
+<p><strong>Shirt:</strong> {{ saves.get('shirts', '') }}</p>
+<p><strong>Footwear:</strong> {{ saves.get('footwear', '') }}</p>
+<p><strong>Pants:</strong> {{ saves.get('pants', '') }}</p>
+<p><strong>Hat:</strong> {{ saves.get('hat', '') }}</p>
+<p><strong>Glasses:</strong> {{ saves.get('glasses', '') }}</p>
+
+<style>
+body {
+  background: {{ saves.get('colors', '') }};
+}
+</style>
+{% endblock %}
